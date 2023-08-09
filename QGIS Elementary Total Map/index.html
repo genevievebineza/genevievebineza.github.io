@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/BoundariesExport_0.js"></script>
+        <script src="data/ChoroplethExport_1.js"></script>
+        <script src="data/SchoolsExport_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        function pop_BoundariesExport_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>School</strong><br />' + (feature.properties['School'] !== null ? autolinker.link(feature.properties['School'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Students of Color (%)</th>\
+                        <td>' + (feature.properties['Students of Color (%)'] !== null ? autolinker.link(feature.properties['Students of Color (%)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Low-Income Students (%)</th>\
+                        <td>' + (feature.properties['Low-Income Students (%)'] !== null ? autolinker.link(feature.properties['Low-Income Students (%)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Students with Disabilities (%)</th>\
+                        <td>' + (feature.properties['Students with Disabilities (%)'] !== null ? autolinker.link(feature.properties['Students with Disabilities (%)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BoundariesExport_0_0() {
+            return {
+                pane: 'pane_BoundariesExport_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(246,250,244,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_BoundariesExport_0');
+        map.getPane('pane_BoundariesExport_0').style.zIndex = 400;
+        map.getPane('pane_BoundariesExport_0').style['mix-blend-mode'] = 'normal';
+        var layer_BoundariesExport_0 = new L.geoJson(json_BoundariesExport_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BoundariesExport_0',
+            layerName: 'layer_BoundariesExport_0',
+            pane: 'pane_BoundariesExport_0',
+            onEachFeature: pop_BoundariesExport_0,
+            style: style_BoundariesExport_0_0,
+        });
+        bounds_group.addLayer(layer_BoundariesExport_0);
+        map.addLayer(layer_BoundariesExport_0);
+        function pop_ChoroplethExport_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Name</strong><br />' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['timestamp'] !== null ? autolinker.link(feature.properties['timestamp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['begin'] !== null ? autolinker.link(feature.properties['begin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['end'] !== null ? autolinker.link(feature.properties['end'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['altitudeMode'] !== null ? autolinker.link(feature.properties['altitudeMode'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['tessellate'] !== null ? autolinker.link(feature.properties['tessellate'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['extrude'] !== null ? autolinker.link(feature.properties['extrude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['visibility'] !== null ? autolinker.link(feature.properties['visibility'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['drawOrder'] !== null ? autolinker.link(feature.properties['drawOrder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['icon'] !== null ? autolinker.link(feature.properties['icon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['School'] !== null ? autolinker.link(feature.properties['School'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Mean Total</th>\
+                        <td>' + (feature.properties['Mean Total'] !== null ? autolinker.link(feature.properties['Mean Total'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Instance Count'] !== null ? autolinker.link(feature.properties['Instance Count'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">elementary_demo_Minority Students</th>\
+                        <td>' + (feature.properties['elementary_demo_Minority Students'] !== null ? autolinker.link(feature.properties['elementary_demo_Minority Students'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">elementary_demo_Eco. Disadvantaged</th>\
+                        <td>' + (feature.properties['elementary_demo_Eco. Disadvantaged'] !== null ? autolinker.link(feature.properties['elementary_demo_Eco. Disadvantaged'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">elementary_demo_Students with Disabilities</th>\
+                        <td>' + (feature.properties['elementary_demo_Students with Disabilities'] !== null ? autolinker.link(feature.properties['elementary_demo_Students with Disabilities'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ChoroplethExport_1_0(feature) {
+            if (feature.properties['Mean Total'] >= 0.000000 && feature.properties['Mean Total'] <= 0.000000 ) {
+                return {
+                pane: 'pane_ChoroplethExport_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,252,245,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['Mean Total'] >= 0.000000 && feature.properties['Mean Total'] <= 0.950920 ) {
+                return {
+                pane: 'pane_ChoroplethExport_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,234,194,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['Mean Total'] >= 0.950920 && feature.properties['Mean Total'] <= 1.164216 ) {
+                return {
+                pane: 'pane_ChoroplethExport_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,199,124,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['Mean Total'] >= 1.164216 && feature.properties['Mean Total'] <= 1.379691 ) {
+                return {
+                pane: 'pane_ChoroplethExport_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,146,75,1.0)',
+                interactive: false,
+            }
+            }
+            if (feature.properties['Mean Total'] >= 1.379691 && feature.properties['Mean Total'] <= 1.567073 ) {
+                return {
+                pane: 'pane_ChoroplethExport_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,68,27,1.0)',
+                interactive: false,
+            }
+            }
+        }
+        map.createPane('pane_ChoroplethExport_1');
+        map.getPane('pane_ChoroplethExport_1').style.zIndex = 401;
+        map.getPane('pane_ChoroplethExport_1').style['mix-blend-mode'] = 'normal';
+        var layer_ChoroplethExport_1 = new L.geoJson(json_ChoroplethExport_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_ChoroplethExport_1',
+            layerName: 'layer_ChoroplethExport_1',
+            pane: 'pane_ChoroplethExport_1',
+            onEachFeature: pop_ChoroplethExport_1,
+            style: style_ChoroplethExport_1_0,
+        });
+        bounds_group.addLayer(layer_ChoroplethExport_1);
+        map.addLayer(layer_ChoroplethExport_1);
+        function pop_SchoolsExport_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Name</strong><br />' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['timestamp'] !== null ? autolinker.link(feature.properties['timestamp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['begin'] !== null ? autolinker.link(feature.properties['begin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['end'] !== null ? autolinker.link(feature.properties['end'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['altitudeMode'] !== null ? autolinker.link(feature.properties['altitudeMode'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['tessellate'] !== null ? autolinker.link(feature.properties['tessellate'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['extrude'] !== null ? autolinker.link(feature.properties['extrude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['visibility'] !== null ? autolinker.link(feature.properties['visibility'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['drawOrder'] !== null ? autolinker.link(feature.properties['drawOrder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['icon'] !== null ? autolinker.link(feature.properties['icon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_SchoolsExport_2_0() {
+            return {
+                pane: 'pane_SchoolsExport_2',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/education_university.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: false,
+            }
+        }
+        map.createPane('pane_SchoolsExport_2');
+        map.getPane('pane_SchoolsExport_2').style.zIndex = 402;
+        map.getPane('pane_SchoolsExport_2').style['mix-blend-mode'] = 'normal';
+        var layer_SchoolsExport_2 = new L.geoJson(json_SchoolsExport_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_SchoolsExport_2',
+            layerName: 'layer_SchoolsExport_2',
+            pane: 'pane_SchoolsExport_2',
+            onEachFeature: pop_SchoolsExport_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, style_SchoolsExport_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_SchoolsExport_2);
+        map.addLayer(layer_SchoolsExport_2);
+        setBounds();
+        </script>
+    </body>
+</html>
